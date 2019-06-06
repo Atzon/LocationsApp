@@ -9,6 +9,14 @@ class Map extends Component {
         const map = new window.google.maps.Map(document.getElementById('map'), {
             center: { lat: 50.071085, lng: 19.9241442 },
             zoom: 18,
+            styles:
+                [{
+                    featureType: "all",
+                    elementType: "labels.icon",
+                    stylers: [{
+                        visibility: "off"
+                    }]
+                }]
         });
         map.addListener('rightclick', this.props.onRightclick);
         this.props.setMap(map);
