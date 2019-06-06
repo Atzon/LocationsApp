@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Row, Col, Button} from 'antd';
+import {connect} from "react-redux";
 import Map from './Map';
 import Locations from './Locations';
 import SearchBar from './SearchBar';
@@ -20,7 +21,20 @@ const row_style ={
 const test_data =["1", "2", "3"];
 
 
-export default class Home extends Component {
+class Home extends Component {
+
+    constructor(props){
+        super(props);
+        this.addMarker = this.addMarker.bind(this);
+    }
+
+    addMarker(position){
+
+        let marker = new window.google.maps.Marker({
+            position: position.latLng.toJSON(),
+            map: this.props.map,
+        });
+    }
 
     render(){
         return(
@@ -30,7 +44,7 @@ export default class Home extends Component {
                </Row>
                <Row style={row_style}>
                    <Col span={18} >
-                       <Map/>
+                       <Map onRightclick={this.addMarker}/>
                    </Col>
                    <Col span={6}>
                        <Locations locations={test_data}/>
@@ -43,3 +57,12 @@ export default class Home extends Component {
         );
     }
 }
+
+
+function mapStateToProps(state){
+    return{
+        map: state.map
+    };
+}
+
+export default connect(mapStateToProps, {})(Home);
